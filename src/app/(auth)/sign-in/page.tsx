@@ -18,7 +18,7 @@ export default function Component() {
         className="bg-orange-500 px-3 py-1 m-4 rounded cursor-pointer"
         onClick={() => signIn()}
       >
-        Sign In
+        Sign in
       </button>
     </>
   );
