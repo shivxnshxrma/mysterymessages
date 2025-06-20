@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1);
       const newUser = new UserModel({
-        username,
+        userName: username,
         email,
         password: hashedPassword,
         verifyCode,
