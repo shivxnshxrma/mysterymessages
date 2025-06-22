@@ -14,13 +14,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { signInSchema } from "@/schemas/signInSchema";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export default function SignInForm() {
   const router = useRouter();
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -30,22 +32,33 @@ export default function SignInForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    const result = await signIn("credentials", {
-      redirect: false,
-      identifier: data.identifier,
-      password: data.password,
-    });
+    setIsSubmitting(true);
 
-    if (result?.error) {
-      if (result.error === "CredentialsSignin") {
-        toast("Incorrect username or password");
-      } else {
-        toast(result.error);
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        identifier: data.identifier,
+        password: data.password,
+      });
+
+      if (result?.error) {
+        console.error(result.error);
+        if (result.error === "CredentialsSignin") {
+          toast("Incorrect username or password");
+        } else {
+          toast(result.error);
+        }
+        return; // Prevent redirect if there's an error
       }
-    }
 
-    if (result?.url) {
-      router.replace("/dashboard");
+      if (result?.url) {
+        router.replace("/dashboard");
+      }
+    } catch (error) {
+      console.error("Sign-in error:", error);
+      toast("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -65,7 +78,7 @@ export default function SignInForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email/Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <Input {...field} />
                   <FormMessage />
                 </FormItem>
@@ -83,7 +96,14 @@ export default function SignInForm() {
               )}
             />
             <Button className="w-full" type="submit">
-              Sign In
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                "Sign In"
+              )}
             </Button>
           </form>
         </Form>
