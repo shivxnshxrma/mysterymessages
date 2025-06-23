@@ -33,6 +33,8 @@ export const authOptions: NextAuthOptions = {
             user.password
           );
           if (isPasswordCorrect) {
+            // console.log(user);
+
             return user;
           } else {
             throw new Error("Invalid Password");

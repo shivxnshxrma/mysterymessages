@@ -2,7 +2,6 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
-import { success } from "zod/v4";
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -39,7 +38,7 @@ export async function POST(request: Request) {
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1);
       const newUser = new UserModel({
-        userName: username,
+        username: username,
         email,
         password: hashedPassword,
         verifyCode,

@@ -42,7 +42,7 @@ export default function SignUpForm() {
 
   useEffect(() => {
     const checkUsernameUnique = async () => {
-      if (username) {
+      if (username.length >= 3) {
         setIsCheckingUsername(true);
         setUsernameMessage(""); // Reset message
         try {
@@ -115,17 +115,19 @@ export default function SignUpForm() {
                     }}
                   />
                   {isCheckingUsername && <Loader2 className="animate-spin" />}
-                  {!isCheckingUsername && usernameMessage && (
-                    <p
-                      className={`text-sm ${
-                        usernameMessage === "Username is unique"
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {usernameMessage}
-                    </p>
-                  )}
+                  {!isCheckingUsername &&
+                    usernameMessage &&
+                    username.length > 2 && (
+                      <p
+                        className={`text-sm ${
+                          usernameMessage === "Username is unique"
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }`}
+                      >
+                        {usernameMessage}
+                      </p>
+                    )}
                   <p className="text-muted text-gray-400 text-sm">
                     Your username will be converted to lower case
                   </p>
@@ -162,7 +164,7 @@ export default function SignUpForm() {
             <Button
               type="submit"
               className="w-full"
-              disabled={isSubmitting || !usernameValid}
+              disabled={isSubmitting || !usernameValid || username.length < 3}
             >
               {isSubmitting ? (
                 <>
