@@ -55,11 +55,11 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
         <div className="flex justify-between items-center">
           <CardTitle>{message.content}</CardTitle>
           <AlertDialog>
-            <AlertDialogTrigger asChild>
+            {/* <AlertDialogTrigger asChild>
               <Button variant="destructive">
                 <X className="w-5 h-5" />
               </Button>
-            </AlertDialogTrigger>
+            </AlertDialogTrigger> */}
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
