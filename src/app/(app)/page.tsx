@@ -7,7 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { MessageCircle, Shield, Zap, Eye, Users, Lock } from "lucide-react";
+import {
+  MessageCircle,
+  Shield,
+  Zap,
+  Eye,
+  Users,
+  Lock,
+  Link,
+} from "lucide-react";
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
@@ -24,19 +32,23 @@ export default function Home() {
               mystery.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button
-                size="lg"
-                className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-              >
-                Sign Up
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="text-lg px-8 py-6 border-2 hover:bg-gray-50"
-              >
-                Login
-              </Button>
+              <Link href="/sign-up">
+                <Button
+                  size="lg"
+                  className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                >
+                  Sign Up
+                </Button>
+              </Link>
+              <Link href="/sign-in">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="text-lg px-8 py-6 border-2 hover:bg-gray-50"
+                >
+                  Login
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -173,21 +185,23 @@ export default function Home() {
             Start your mystery conversation today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="text-lg px-8 py-6 bg-white text-purple-600 hover:bg-gray-100"
-            >
-              <Users className="mr-2 h-5 w-5" />
-              Get Started Now
-            </Button>
-            <Button
+            <Link href="/sign-up">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="text-lg px-8 py-6 bg-white text-purple-600 hover:bg-gray-100"
+              >
+                <Users className="mr-2 h-5 w-5" />
+                Get Started Now
+              </Button>
+            </Link>
+            {/* <Button
               size="lg"
               variant="outline"
-              className="text-lg px-8 py-6 border-2 border-white text-black hover:bg-white/10"
+              className="text-lg px-8 py-6 border-2 border-white text-purple-600 hover:bg-white/10"
             >
               Learn More
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>
