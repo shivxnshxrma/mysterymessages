@@ -7,15 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  MessageCircle,
-  Shield,
-  Zap,
-  Eye,
-  Users,
-  Lock,
-  Link,
-} from "lucide-react";
+import { MessageCircle, Shield, Zap, Eye, Users, Lock } from "lucide-react";
+import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
