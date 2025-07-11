@@ -28,7 +28,7 @@ export default function Home() {
               <Link href="/sign-up">
                 <Button
                   size="lg"
-                  className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                  className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 cursor-pointer"
                 >
                   Sign Up
                 </Button>
@@ -37,7 +37,7 @@ export default function Home() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="text-lg px-8 py-6 border-2 hover:bg-gray-50"
+                  className="text-lg px-8 py-6 border-2 hover:bg-gray-50 cursor-pointer"
                 >
                   Login
                 </Button>
@@ -182,7 +182,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="secondary"
-                className="text-lg px-8 py-6 bg-white text-purple-600 hover:bg-gray-100"
+                className="text-lg px-8 py-6 bg-white text-purple-600 hover:bg-gray-100 cursor-pointer"
               >
                 <Users className="mr-2 h-5 w-5" />
                 Get Started Now
