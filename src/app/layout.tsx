@@ -5,7 +5,7 @@ import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: "maskr",
+  title: "MysteryMessage",
   description: "Created by Shivansh",
 };
 
