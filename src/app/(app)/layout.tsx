@@ -8,7 +8,6 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <Navbar />
       {children}
       <Toaster />
     </>

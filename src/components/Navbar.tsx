@@ -11,34 +11,49 @@ function Navbar() {
   const user: User = session?.user as User;
 
   return (
-    <nav className="p-4 md:p-6 shadow-md bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        <a href="#" className="text-xl font-bold mb-4 md:mb-0">
-          MysteryMessage
-        </a>
-        {session ? (
-          <>
-            <span className="mr-4">
-              Welcome, {user?.username || user?.email}
-            </span>
-            <Button
-              onClick={() => signOut()}
-              className="w-full md:w-auto bg-slate-100 text-black cursor-pointer"
-              variant="outline"
-            >
-              Logout
-            </Button>
-          </>
-        ) : (
-          <Link href="/sign-in">
-            <Button
-              className="w-full md:w-auto bg-slate-100 text-black cursor-pointer"
-              variant={"outline"}
-            >
-              Login
-            </Button>
-          </Link>
-        )}
+    // Make the navbar fixed, full-width, and ensure it's on top with z-index
+    <nav className="fixed top-0 left-0 right-0 z-50 py-3">
+      {/* This inner container now holds the styling and max-width */}
+      <div className="container mx-auto max-w-screen-xl px-10 py-3 rounded-full bg-black/30 backdrop-blur-lg border border-white/10 shadow-xl">
+        <div className="flex justify-between items-center">
+          {/* Logo or Brand Name */}
+          <a
+            href="/"
+            className="text-xl font-bold text-white flex items-center gap-2"
+          >
+            <img
+              src="easter-bunny.png"
+              className="w-10 h-10 filter invert brightness-0 contrast-200"
+              alt="Logo"
+            />
+            MysteryMessage
+          </a>
+          <div className="flex items-center gap-4">
+            {session ? (
+              <>
+                <span className="mr-4 text-sm text-gray-200">
+                  Welcome, {user?.username || user?.email}
+                </span>
+                <Button
+                  onClick={() => signOut()}
+                  className="text-white hover:bg-white cursor-pointer"
+                  variant="ghost"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Link href="/sign-in">
+                <Button
+                  className="text-white hover:bg-white cursor-pointer"
+                  variant="ghost"
+                >
+                  Login
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
       </div>
     </nav>
   );
