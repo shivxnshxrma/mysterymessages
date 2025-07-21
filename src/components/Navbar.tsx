@@ -17,26 +17,34 @@ function Navbar() {
       <div className="container mx-auto max-w-screen-xl px-10 py-3 rounded-full bg-black/30 backdrop-blur-lg border border-white/10 shadow-xl">
         <div className="flex justify-between items-center">
           {/* Logo or Brand Name */}
-          <a
-            href="/"
-            className="text-xl font-bold text-white flex items-center gap-2"
-          >
-            <img
-              src="easter-bunny.png"
-              className="w-10 h-10 filter invert brightness-0 contrast-200"
-              alt="Logo"
-            />
-            MysteryMessage
-          </a>
+          <div>
+            <a
+              href="/"
+              className="text-xl font-bold text-white flex items-center gap-2"
+            >
+              <img
+                src="easter-bunny.png"
+                className="w-10 h-10 filter invert brightness-0 contrast-200"
+                alt="Logo"
+              />
+              MysteryMessage
+            </a>
+          </div>
+          <div>
+            {session && (
+              <>
+                <span className="mr-30 text-lg font-bold text-gray-200">
+                  Welcome, {user?.username || user?.email}
+                </span>
+              </>
+            )}
+          </div>
           <div className="flex items-center gap-4">
             {session ? (
               <>
-                <span className="mr-4 text-sm text-gray-200">
-                  Welcome, {user?.username || user?.email}
-                </span>
                 <Button
                   onClick={() => signOut()}
-                  className="text-white hover:bg-white cursor-pointer"
+                  className="text-white hover:bg-white cursor-pointer rounded-4xl text-lg font-semibold"
                   variant="ghost"
                 >
                   Logout
@@ -45,7 +53,7 @@ function Navbar() {
             ) : (
               <Link href="/sign-in">
                 <Button
-                  className="text-white hover:bg-white cursor-pointer"
+                  className="text-white hover:bg-white cursor-pointer rounded-4xl text-lg font-semibold"
                   variant="ghost"
                 >
                   Login

@@ -21,6 +21,7 @@ import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signUpSchema } from "@/schemas/signUpSchema";
+import DarkVeil from "@/components/DarkVeil";
 
 export default function SignUpForm() {
   const [username, setUsername] = useState("");
@@ -90,13 +91,18 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+      <div className="absolute inset-0">
+        <DarkVeil />
+      </div>
+      <div className="relative z-10 w-full max-w-md p-8 space-y-8 bg-gray-900/60 backdrop-blur-lg border border-gray-700 rounded-xl shadow-2xl">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
             Join True Feedback
           </h1>
-          <p className="mb-4">Sign up to start your anonymous adventure</p>
+          <p className="mb-4 text-gray-300">
+            Sign up to start your anonymous adventure
+          </p>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -105,13 +111,14 @@ export default function SignUpForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="text-gray-300">Username</FormLabel>
                   <Input
                     {...field}
                     onChange={(e) => {
                       field.onChange(e);
                       setUsername(e.target.value);
                     }}
+                    className="bg-gray-800/50 border-gray-600 text-gray-200 focus-visible:ring-offset-gray-900"
                   />
                   {isCheckingUsername && <Loader2 className="animate-spin" />}
                   {!isCheckingUsername &&
@@ -119,7 +126,7 @@ export default function SignUpForm() {
                     username.length > 2 && (
                       <p
                         className={`text-sm ${
-                          usernameMessage === "Username is unique"
+                          usernameMessage === "Username is available"
                             ? "text-green-500"
                             : "text-red-500"
                         }`}
@@ -127,7 +134,7 @@ export default function SignUpForm() {
                         {usernameMessage}
                       </p>
                     )}
-                  <p className="text-muted text-gray-400 text-sm">
+                  <p className="text-gray-600 text-sm">
                     Your username will be converted to lower case
                   </p>
                   <FormMessage />
@@ -139,9 +146,14 @@ export default function SignUpForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <Input {...field} name="email" />
-                  <p className="text-muted text-gray-400 text-sm">
+                  <FormLabel className="text-gray-300">Email</FormLabel>
+                  <Input
+                    {...field}
+                    name="email"
+                    type="email"
+                    className="bg-gray-800/50 border-gray-600 text-gray-200 focus-visible:ring-offset-gray-900"
+                  />
+                  <p className=" text-gray-600 text-sm">
                     We will send you a verification code
                   </p>
                   <FormMessage />
@@ -154,15 +166,20 @@ export default function SignUpForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <Input type="password" {...field} name="password" />
+                  <FormLabel className="text-gray-300">Password</FormLabel>
+                  <Input
+                    type="password"
+                    {...field}
+                    name="password"
+                    className="bg-gray-800/50 border-gray-600 text-gray-200 focus-visible:ring-offset-gray-900"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Button
               type="submit"
-              className="w-full"
+              className="w-full bg-gray-100 text-black hover:bg-gray-200 focus-visible:ring-offset-gray-900 cursor-pointer"
               disabled={isSubmitting || !usernameValid || username.length < 3}
             >
               {isSubmitting ? (
@@ -176,7 +193,7 @@ export default function SignUpForm() {
             </Button>
           </form>
         </Form>
-        <div className="text-center mt-4">
+        <div className="text-center mt-4 text-gray-400">
           <p>
             Already a member?{" "}
             <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">

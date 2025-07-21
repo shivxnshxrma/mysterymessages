@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { signInSchema } from "@/schemas/signInSchema";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import DarkVeil from "@/components/DarkVeil";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -47,6 +48,7 @@ export default function SignInForm() {
           toast("Incorrect username or password");
         } else {
           toast(result.error);
+          // console.error("Sign-in error:", result.error);
         }
         return; // Prevent redirect if there's an error
       }
@@ -63,13 +65,22 @@ export default function SignInForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+      {/* Orb is now positioned absolutely to act as the background */}
+      <div className="absolute inset-0">
+        <DarkVeil />
+      </div>
+
+      {/* Form is now centered on top with a higher z-index and glassmorphism styling */}
+      <div className="relative z-10 w-full max-w-md p-8 space-y-8 bg-gray-900/60 backdrop-blur-lg border border-gray-700 rounded-xl shadow-2xl">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+          {/* Text colors updated for contrast on a dark background */}
+          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
             Welcome Back to True Feedback
           </h1>
-          <p className="mb-4">Sign in to continue your secret conversations</p>
+          <p className="mb-4 text-gray-300">
+            Sign in to continue your secret conversations
+          </p>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -78,8 +89,15 @@ export default function SignInForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email/Username</FormLabel>
-                  <Input {...field} required />
+                  <FormLabel className="text-gray-300">
+                    Email/Username
+                  </FormLabel>
+                  {/* Inputs are styled for a dark theme */}
+                  <Input
+                    {...field}
+                    required
+                    className="bg-gray-800/50 border-gray-600 text-gray-200 focus-visible:ring-offset-gray-900"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -89,13 +107,22 @@ export default function SignInForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <Input type="password" {...field} required />
+                  <FormLabel className="text-gray-300">Password</FormLabel>
+                  <Input
+                    type="password"
+                    {...field}
+                    required
+                    className="bg-gray-800/50 border-gray-600 text-gray-200 focus-visible:ring-offset-gray-900"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">
+            {/* Button styled to be a clear call to action */}
+            <Button
+              className="w-full bg-gray-100 text-black hover:bg-gray-200 focus-visible:ring-offset-gray-900 cursor-pointer"
+              type="submit"
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -107,10 +134,10 @@ export default function SignInForm() {
             </Button>
           </form>
         </Form>
-        <div className="text-center mt-4">
+        <div className="text-center text-gray-400">
           <p>
             Not a member yet?{" "}
-            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
+            <Link href="/sign-up" className="text-blue-400 hover:text-blue-300">
               Sign up
             </Link>
           </p>

@@ -1,5 +1,6 @@
 "use client";
 
+import DarkVeil from "@/components/DarkVeil";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -48,13 +49,18 @@ const VerifyAccount = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+      <div className="absolute inset-0">
+        <DarkVeil />
+      </div>
+      <div className="relative z-10 w-full max-w-md p-8 space-y-8 bg-gray-900/60 backdrop-blur-lg border border-gray-700 rounded-xl shadow-2xl">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
+          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
             Verify Your Account
           </h1>
-          <p className="mb-4">Enter the verification code sent to your email</p>
+          <p className="mb-4 text-gray-400">
+            Enter the verification code sent to your email
+          </p>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -63,13 +69,22 @@ const VerifyAccount = () => {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Verification Code</FormLabel>
-                  <Input {...field} value={field.value ?? ""} />
+                  <FormLabel className="text-gray-300">
+                    Verification Code
+                  </FormLabel>
+                  <Input
+                    {...field}
+                    value={field.value ?? ""}
+                    className="bg-gray-800/50 border-gray-600 text-gray-200 focus-visible:ring-offset-gray-900"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">
+            <Button
+              type="submit"
+              className=" bg-gray-100 text-black hover:bg-gray-200 focus-visible:ring-offset-gray-900 cursor-pointer"
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

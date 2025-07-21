@@ -77,7 +77,7 @@ export default function Home() {
                 <CardTitle className="text-xl">100% Anonymous</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-gray-400">
+                <CardDescription className="text-lg text-gray-400 max-w-3xl mx-auto">
                   Your identity remains completely hidden. No registration
                   required, no tracking, just pure anonymity.
                 </CardDescription>
@@ -91,7 +91,7 @@ export default function Home() {
                 <CardTitle className="text-xl">Instant Delivery</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-gray-400">
+                <CardDescription className="text-lg text-gray-400 max-w-3xl mx-auto">
                   Messages are delivered instantly. Share your thoughts without
                   delay or hesitation.
                 </CardDescription>
@@ -105,7 +105,7 @@ export default function Home() {
                 <CardTitle className="text-xl">Secure & Private</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-gray-400">
+                <CardDescription className="text-lg text-gray-400 max-w-3xl mx-auto">
                   Advanced encryption ensures your messages are safe and
                   private. No data is stored or shared.
                 </CardDescription>
@@ -119,10 +119,10 @@ export default function Home() {
       <section className="py-24 bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              How It Works
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              How It Works?
             </h2>
-            <p className="text-lg text-gray-400">
+            <p className="text-xl text-gray-400">
               Sending anonymous messages has never been easier
             </p>
           </div>
@@ -133,7 +133,7 @@ export default function Home() {
                 1
               </div>
               <h3 className="text-xl font-semibold mb-2 text-white">Sign Up</h3>
-              <p className="text-gray-400">
+              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
                 Create your account and get your unique profile link to receive
                 anonymous messages
               </p>
@@ -146,7 +146,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-2 text-white">
                 Share Your Profile Link
               </h3>
-              <p className="text-gray-400">
+              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
                 Share your unique link with friends, followers, or anyone you
                 want to hear from
               </p>
@@ -159,7 +159,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-2 text-white">
                 Accept Anonymous Messages
               </h3>
-              <p className="text-gray-400">
+              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
                 Receive honest feedback, confessions, and messages from people
                 anonymously
               </p>
@@ -196,8 +196,8 @@ export default function Home() {
       <footer className="py-8 bg-gray-900">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400">
-            © 2024 Mystery Messages. Send anonymous messages with complete
-            privacy.
+            © {new Date().getFullYear()} Mystery Messages. Send anonymous
+            messages with complete privacy.
           </p>
         </div>
       </footer>

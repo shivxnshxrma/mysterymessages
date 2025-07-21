@@ -15,6 +15,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AcceptMessageSchema } from "@/schemas/acceptMessageSchema";
 import { toast } from "sonner";
+import Navbar from "@/components/Navbar";
+import SpotlightCard from "@/components/SpotlightCard";
+import Aurora from "@/components/Aurora";
 
 function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -119,61 +122,108 @@ function UserDashboard() {
   };
 
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+    <div className="min-h-screen bg-black text-white antialiased ">
+      <Navbar />
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{" "}
-        <div className="flex items-center">
-          <input
-            type="text"
-            value={profileUrl}
-            disabled
-            className="input input-bordered w-full p-2 mr-2"
-          />
-          <Button onClick={copyToClipboard}>Copy</Button>
+      <Aurora
+        colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+        blend={0.5}
+        amplitude={1.5}
+        speed={0.5}
+      />
+      {/* Note: The <Orb /> background would be in your layout file for consistency */}
+
+      {/* Main Content */}
+
+      <div className="container mx-auto max-w-6xl p-4 md:p-6 py-24">
+        <div className="text-center md:text-left mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold">User Dashboard</h1>
+          <p className="mt-2 text-lg text-gray-400">Welcome back, {username}</p>
         </div>
-      </div>
 
-      <div className="mb-4">
-        <Switch
-          {...register("acceptMessages")}
-          checked={acceptMessages}
-          onCheckedChange={handleSwitchChange}
-          disabled={isSwitchLoading}
-        />
-        <span className="ml-2">
-          Accept Messages: {acceptMessages ? "On" : "Off"}
-        </span>
-      </div>
-      <Separator />
+        {/* Shareable Link & Message Status Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {/* Using the SpotlightCard for the unique link */}
+          <SpotlightCard className="p-6">
+            <h2 className="text-lg font-semibold mb-2 text-white">
+              Your Unique Link
+            </h2>
+            <div className="flex items-center gap-4">
+              <p className="text-sm text-gray-300 break-all flex-grow">
+                {profileUrl}
+              </p>
+              <Button
+                onClick={copyToClipboard}
+                variant="outline"
+                className="border-gray-600 text-black hover:bg-gray-800 hover:text-white cursor-pointer"
+              >
+                Copy
+              </Button>
+            </div>
+          </SpotlightCard>
 
-      <Button
-        className="mt-4"
-        variant="outline"
-        onClick={(e) => {
-          e.preventDefault();
-          fetchMessages(true);
-        }}
-      >
-        {isLoading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <RefreshCcw className="h-4 w-4" />
-        )}
-      </Button>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {messages.length > 0 ? (
-          messages.map((message) => (
-            <MessageCard
-              key={message._id as string}
-              message={message}
-              onMessageDelete={handleDeleteMessage}
-            />
-          ))
-        ) : (
-          <p>No messages to display.</p>
-        )}
+          {/* Using the SpotlightCard for the accept messages switch */}
+          <SpotlightCard className="p-6 flex items-center justify-center md:justify-start">
+            <div className="flex items-center space-x-4">
+              <Switch
+                {...register("acceptMessages")}
+                checked={acceptMessages}
+                onCheckedChange={handleSwitchChange}
+                disabled={isSwitchLoading}
+                id="accept-messages"
+                className="data-[state=checked]:bg-gray-600 data-[state=unchecked]:bg-gray-500"
+              />
+              <label
+                htmlFor="accept-messages"
+                className="text-lg text-white font-medium"
+              >
+                Accepting Messages: {acceptMessages ? "Yes" : "No"}
+              </label>
+            </div>
+          </SpotlightCard>
+        </div>
+
+        <Separator className="my-8 bg-gray-700" />
+
+        {/* Messages Display Section */}
+        <div className="mt-8">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold">Your Messages</h2>
+            <Button
+              variant="outline"
+              className="border-gray-600 text-gray-700 hover:bg-gray-800 hover:text-white cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                fetchMessages(true);
+              }}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCcw className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {messages.length > 0 ? (
+              messages.map((message) => (
+                <MessageCard
+                  key={message._id as string}
+                  message={message}
+                  onMessageDelete={handleDeleteMessage}
+                />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-400">
+                  No messages to display. Share your link to get some!
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
