@@ -30,13 +30,11 @@ function Navbar() {
               MysteryMessage
             </a>
           </div>
-          <div>
+          <div className="hidden md:flex items-center gap-4 mr-20">
             {session && (
-              <>
-                <span className="mr-30 text-lg font-bold text-gray-200">
-                  Welcome, {user?.username || user?.email}
-                </span>
-              </>
+              <span className="text-base font-medium text-gray-200">
+                Welcome, {user?.username || user?.email}
+              </span>
             )}
           </div>
           <div className="flex items-center gap-4">
