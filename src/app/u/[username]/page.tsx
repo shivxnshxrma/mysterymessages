@@ -24,8 +24,6 @@ import { useParams } from "next/navigation";
 import { messageSchema } from "@/schemas/messageSchema";
 import { toast } from "sonner";
 import DarkVeil from "@/components/DarkVeil";
-import GradientText from "@/components/GradientText";
-import Threads from "@/components/Threads";
 
 const specialChar = "||";
 
