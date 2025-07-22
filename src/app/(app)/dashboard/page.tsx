@@ -245,7 +245,6 @@ function UserDashboard() {
           />
         </div>
         <Separator className="my-8 bg-gray-700" />
-        // ... (inside the return statement of your UserDashboard)
         <EventMessages
           events={events}
           messages={messages}

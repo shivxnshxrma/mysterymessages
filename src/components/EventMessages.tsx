@@ -85,7 +85,7 @@ export function EventMessages({
             </Select>
             <Button
               variant="outline"
-              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white p-2 cursor-pointer"
+              className="border-gray-600 text-black hover:bg-gray-800 hover:text-white p-2 cursor-pointer"
               onClick={() => fetchMessages(true, selectedEventId!)}
               disabled={isLoading || !selectedEventId}
             >
