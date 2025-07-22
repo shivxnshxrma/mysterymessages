@@ -5,7 +5,7 @@ import UserModel from "@/model/User";
 import { User } from "next-auth";
 import mongoose from "mongoose";
 
-export async function GET(rquest: Request) {
+export async function GET(request: Request) {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
@@ -23,12 +23,21 @@ export async function GET(rquest: Request) {
     );
   }
   const userId = new mongoose.Types.ObjectId(user._id);
+  const { searchParams } = new URL(request.url);
+  const eventId = searchParams.get("eventId");
+  if (!eventId) {
+    return Response.json(
+      { success: false, message: "Event ID is required" },
+      { status: 400 }
+    );
+  }
   try {
-    const exists = await UserModel.findById(userId);
+    // const exists = await UserModel.findById(userId);
 
     const userdata = await UserModel.aggregate([
       { $match: { _id: userId } },
       { $unwind: { path: "$messages", preserveNullAndEmptyArrays: true } },
+      { $match: { "messages.eventId": new mongoose.Types.ObjectId(eventId) } },
       { $sort: { "messages.createdAt": -1 } },
       { $group: { _id: "$_id", messages: { $push: "$messages" } } },
     ]);
@@ -36,18 +45,19 @@ export async function GET(rquest: Request) {
     if (!userdata || userdata.length == 0) {
       return Response.json(
         {
-          success: false,
-          message: "User not found",
+          success: true,
+          message: "No messages found for this event.", // A helpful status message
+          messages: [], // The empty array of data
         },
-        {
-          status: 401,
-        }
+        { status: 200 }
       );
     }
     return Response.json(
       {
         success: true,
-        message: userdata[0].messages,
+        // message: userdata[0].messages,
+        message: "Messages fetched successfully", // A helpful status message
+        messages: userdata[0].messages,
       },
       {
         status: 200,

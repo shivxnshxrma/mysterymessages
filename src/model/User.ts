@@ -3,11 +3,17 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface Message extends Document {
   content: string;
   createdAt: Date;
+  eventId: mongoose.Schema.Types.ObjectId;
 }
 
 const MessageSchema: Schema<Message> = new Schema({
   content: {
     type: String,
+    required: true,
+  },
+  eventId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Event",
     required: true,
   },
   createdAt: {
@@ -26,6 +32,7 @@ export interface User extends Document {
   isVerified: boolean;
   isAcceptingMessage: boolean;
   messages: Message[];
+  events: mongoose.Schema.Types.ObjectId[];
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -66,6 +73,12 @@ const UserSchema: Schema<User> = new Schema({
     default: true,
   },
   messages: [MessageSchema],
+  events: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Event",
+    },
+  ],
 });
 
 const UserModel =
