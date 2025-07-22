@@ -54,7 +54,7 @@ const UserSchema: Schema<User> = new Schema({
   },
   password: {
     type: String,
-    // required: [true, "Password is required"],
+    // required: [true, "Password is requireds"],
     required: false, // Password is optional for OAuth users
   },
   verifyCode: {
