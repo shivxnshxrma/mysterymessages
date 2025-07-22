@@ -54,6 +54,40 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    // New signIn callback
+    async signIn({ user, account }) {
+      if (account?.provider === "google" || account?.provider === "github") {
+        try {
+          await dbConnect();
+          const existingUser = await UserModel.findOne({ email: user.email });
+
+          if (existingUser) {
+            // User already exists, sign-in is allowed
+            return true;
+          } else {
+            // New OAuth user, create a full user document
+            const username =
+              user.email!.split("@")[0] + Math.floor(Math.random() * 1000);
+
+            await UserModel.create({
+              email: user.email,
+              username: username,
+              name: user.name,
+              image: user.image,
+              isVerified: true, // OAuth emails are considered verified
+              isAcceptingMessage: true,
+              messages: [],
+              events: [],
+            });
+          }
+          return true;
+        } catch (error) {
+          console.error("Error during OAuth sign-in:", error);
+          return false; // Prevent sign-in on error
+        }
+      }
+      return true; // Allow credentials sign-in to proceed
+    },
     async jwt({ token, user }) {
       if (user) {
         token._id = user._id?.toString();
