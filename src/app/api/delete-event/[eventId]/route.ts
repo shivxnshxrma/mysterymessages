@@ -1,3 +1,4 @@
+import { NextRequest, NextResponse } from "next/server"; // 1. Import Next.js specific types
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
@@ -6,17 +7,17 @@ import UserModel from "@/model/User";
 import { User } from "next-auth";
 
 export async function DELETE(
-  request: Request,
-  // FIX: Correctly type the second argument as a context object
+  request: NextRequest, // 2. Use NextRequest
   context: { params: { eventId: string } }
 ) {
-  const eventId = context.params.eventId; // Access eventId from context.params
+  const { eventId } = context.params; // Destructure for cleaner access
   await dbConnect();
   const session = await getServerSession(authOptions);
   const user: User = session?.user as User;
 
   if (!session || !user) {
-    return Response.json(
+    // 3. Use NextResponse for all responses
+    return NextResponse.json(
       { success: false, message: "Not authenticated" },
       { status: 401 }
     );
@@ -36,13 +37,13 @@ export async function DELETE(
     });
 
     if (deleteResult.deletedCount === 0) {
-      return Response.json(
+      return NextResponse.json(
         { message: "Event not found or you are not the owner", success: false },
         { status: 404 }
       );
     }
 
-    return Response.json(
+    return NextResponse.json(
       {
         message: "Event and associated messages deleted successfully",
         success: true,
@@ -51,7 +52,7 @@ export async function DELETE(
     );
   } catch (error) {
     console.error("Error deleting event:", error);
-    return Response.json(
+    return NextResponse.json(
       { message: "Error deleting event", success: false },
       { status: 500 }
     );
