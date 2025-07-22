@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"; // 1. Import Next.js specific types
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
@@ -7,16 +7,15 @@ import UserModel from "@/model/User";
 import { User } from "next-auth";
 
 export async function DELETE(
-  request: NextRequest, // 2. Use NextRequest
-  context: { params: { eventId: string } }
+  request: NextRequest,
+  context: any // Matching the working pattern
 ) {
-  const { eventId } = context.params; // Destructure for cleaner access
+  const { eventId } = context.params as { eventId: string };
   await dbConnect();
   const session = await getServerSession(authOptions);
   const user: User = session?.user as User;
 
   if (!session || !user) {
-    // 3. Use NextResponse for all responses
     return NextResponse.json(
       { success: false, message: "Not authenticated" },
       { status: 401 }
