@@ -52,18 +52,15 @@ const UserSchema: Schema<User> = new Schema({
       "Please use a valid email address",
     ],
   },
+  // FIX: These fields are now optional
   password: {
     type: String,
-    // required: [true, "Password is requireds"],
-    required: false, // Password is optional for OAuth users
   },
   verifyCode: {
     type: String,
-    required: [true, "Verification code is required"],
   },
   verifyCodeExpiry: {
     type: Date,
-    required: [true, "Code is expired"],
   },
   isVerified: {
     type: Boolean,
@@ -81,7 +78,6 @@ const UserSchema: Schema<User> = new Schema({
     },
   ],
 });
-
 const UserModel =
   (mongoose.models.User as mongoose.Model<User>) ||
   mongoose.model<User>("User", UserSchema);
