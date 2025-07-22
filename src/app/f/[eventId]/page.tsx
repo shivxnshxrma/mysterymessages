@@ -62,7 +62,23 @@ export default function EventFeedbackPage() {
   }, [eventId]);
 
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
-    // ... (This function remains the same)
+    setIsSendingMessage(true);
+    try {
+      const response = await axios.post<ApiResponse>("/api/send-message", {
+        ...data,
+        username,
+        eventId,
+      });
+      toast.success(response.data.message);
+      form.reset({ content: "" });
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast.error(
+        axiosError.response?.data.message ?? "Failed to send message."
+      );
+    } finally {
+      setIsSendingMessage(false);
+    }
   };
 
   if (isLoading) {
