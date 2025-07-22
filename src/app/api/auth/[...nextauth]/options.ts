@@ -90,11 +90,18 @@ export const authOptions: NextAuthOptions = {
       return true; // Allow credentials sign-in to proceed
     },
     async jwt({ token, user }) {
+      // If it's the initial sign-in, the `user` object is available
       if (user) {
-        token._id = user._id?.toString();
-        token.isVerified = user.isVerified;
-        token.isAcceptingMessages = user.isAcceptingMessages;
-        token.username = user.username;
+        // Find the user in your database using the email from the provider
+        const dbUser = await UserModel.findOne({ email: user.email });
+
+        if (dbUser) {
+          // Populate the token with data from your database
+          token._id = dbUser._id?.toString();
+          token.isVerified = dbUser.isVerified;
+          token.isAcceptingMessages = dbUser.isAcceptingMessage;
+          token.username = dbUser.username;
+        }
       }
       return token;
     },
