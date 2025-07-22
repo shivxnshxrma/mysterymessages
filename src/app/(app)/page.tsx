@@ -24,7 +24,7 @@ export default function Home() {
         </div>
 
         {/* Content container is now 'relative' to ensure it stacks on top of the background */}
-        <div className="relative container mx-auto px-4">
+        <div className="relative container mx-auto px-4 mt-20">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 font-sans">
               Send Anonymous Messages
