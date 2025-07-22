@@ -1,6 +1,6 @@
 import React from "react";
 import { Message } from "@/model/User";
-import { Event } from "@/model/Event";
+import { type Event as EventModel } from "@/model/Event";
 import {
   Select,
   SelectContent,
@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 type EventMessagesProps = {
-  events: Event[];
+  events: EventModel[];
   messages: Message[];
   selectedEventId: string | null;
   setSelectedEventId: (id: string) => void;
@@ -35,6 +35,9 @@ type EventMessagesProps = {
   handleDeleteEvent: (eventId: string) => void;
   handleDeleteMessage: (messageId: string) => void;
   baseUrl: string;
+  // Add props for pagination
+  hasNextPage: boolean;
+  handleLoadMore: () => void;
 };
 
 export function EventMessages({
@@ -49,13 +52,16 @@ export function EventMessages({
   handleDeleteEvent,
   handleDeleteMessage,
   baseUrl,
+  // Destructure pagination props
+  hasNextPage,
+  handleLoadMore,
 }: EventMessagesProps) {
   const selectedEvent = events.find((e) => e._id === selectedEventId);
 
   return (
     <div className="mt-8">
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold">Your Events</h2>
+        <h2 className="text-2xl md:text-3xl font-bold">Your Messages</h2>
         {events.length > 0 && (
           <div className="flex items-center gap-4 w-full md:w-auto">
             <Select
@@ -72,18 +78,18 @@ export function EventMessages({
                     value={event._id as string}
                     className="cursor-pointer"
                   >
-                    <span className="cursor-pointer">{event.name}</span>
+                    <span>{event.name}</span>
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <Button
               variant="outline"
-              className="border-gray-600 text-black hover:bg-gray-800 hover:text-white p-2 cursor-pointer"
+              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white p-2 cursor-pointer"
               onClick={() => fetchMessages(true, selectedEventId!)}
               disabled={isLoading || !selectedEventId}
             >
-              {isLoading ? (
+              {isLoading && messages.length === 0 ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : (
                 <RefreshCcw className="h-5 w-5" />
@@ -154,8 +160,9 @@ export function EventMessages({
         </div>
       )}
 
+      {/* Message Grid */}
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {isLoading ? (
+        {isLoading && messages.length === 0 ? (
           <div className="col-span-full text-center py-12">
             <Loader2 className="h-8 w-8 animate-spin mx-auto text-gray-400" />
           </div>
@@ -179,6 +186,22 @@ export function EventMessages({
               No events created yet. Create an event to get started!
             </p>
           </div>
+        )}
+      </div>
+
+      {/* Load More Button */}
+      <div className="text-center mt-8">
+        {hasNextPage && (
+          <Button onClick={handleLoadMore} disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Load More"
+            )}
+          </Button>
         )}
       </div>
     </div>

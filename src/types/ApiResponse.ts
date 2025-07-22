@@ -6,4 +6,5 @@ export interface ApiResponse {
   isAcceptingMessages?: boolean;
   messages?: Array<Message>;
   events?: Array<EventModel>;
+  hasNextPage?: boolean;
 }

@@ -27,6 +27,8 @@ function UserDashboard() {
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(false);
 
   // const { toast } = useToast();
 
@@ -92,12 +94,19 @@ function UserDashboard() {
     async (refresh: boolean = false, eventId: string) => {
       setIsLoading(true);
       try {
+        const pageToFetch = refresh ? 1 : page;
         const response = await axios.get<ApiResponse>(
-          `/api/get-messages?eventId=${eventId}`
+          `/api/get-messages?eventId=${eventId}&page=${pageToFetch}`
         );
+        const newMessages = response.data.messages || [];
 
-        // FIX: Use the correct property name 'message'
-        setMessages(response.data.messages || []);
+        if (refresh || pageToFetch === 1) {
+          setMessages(newMessages); // Replace messages on refresh or first page
+        } else {
+          setMessages((prev) => [...prev, ...newMessages]); // Append for "Load More"
+        }
+
+        setHasNextPage(response.data.hasNextPage || false);
 
         if (refresh) {
           toast.success("Refreshed Messages");
@@ -111,7 +120,7 @@ function UserDashboard() {
         setIsLoading(false);
       }
     },
-    [] // Consider adding dependencies like setIsLoading, setMessages if your linter requires it
+    [page]
   );
   const fetchEvents = useCallback(async () => {
     try {
@@ -165,11 +174,21 @@ function UserDashboard() {
 
   useEffect(() => {
     if (selectedEventId) {
-      fetchMessages(false, selectedEventId);
-    } else {
-      setMessages([]); // Clear messages if no event is selected
+      setPage(1); // Reset page to 1 when a new event is selected
+      fetchMessages(true, selectedEventId); // Fetch first page for the new event
     }
-  }, [selectedEventId, fetchMessages]);
+  }, [selectedEventId]);
+
+  const handleLoadMore = () => {
+    if (hasNextPage) {
+      setPage((prev) => prev + 1);
+    }
+  };
+  useEffect(() => {
+    if (page > 1 && selectedEventId) {
+      fetchMessages(false, selectedEventId);
+    }
+  }, [page, selectedEventId, fetchMessages]);
 
   // Handle switch change
   const handleSwitchChange = async () => {
@@ -213,7 +232,6 @@ function UserDashboard() {
           <h1 className="text-4xl md:text-5xl font-bold">User Dashboard</h1>
           <p className="mt-2 text-lg text-gray-400">Welcome back, {username}</p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <EventCreator
             handleCreateEvent={handleCreateEvent}
@@ -226,9 +244,8 @@ function UserDashboard() {
             register={register}
           />
         </div>
-
         <Separator className="my-8 bg-gray-700" />
-
+        // ... (inside the return statement of your UserDashboard)
         <EventMessages
           events={events}
           messages={messages}
@@ -241,6 +258,9 @@ function UserDashboard() {
           handleDeleteEvent={handleDeleteEvent}
           handleDeleteMessage={handleDeleteMessage}
           baseUrl={baseUrl}
+          // Pass the new props for pagination
+          hasNextPage={hasNextPage}
+          handleLoadMore={handleLoadMore}
         />
       </div>
     </div>
