@@ -7,9 +7,10 @@ import { User } from "next-auth";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { eventId: string } }
+  // FIX: Correctly type the second argument as a context object
+  context: { params: { eventId: string } }
 ) {
-  const eventId = params.eventId;
+  const eventId = context.params.eventId; // Access eventId from context.params
   await dbConnect();
   const session = await getServerSession(authOptions);
   const user: User = session?.user as User;
@@ -22,16 +23,11 @@ export async function DELETE(
   }
 
   try {
-    // Step 1: Pull all messages associated with the event from the user's messages array
-    const updateResult = await UserModel.updateOne(
+    // Step 1: Pull all messages associated with the event
+    await UserModel.updateOne(
       { _id: user._id },
       { $pull: { messages: { eventId: eventId } } }
     );
-
-    if (updateResult.modifiedCount === 0 && updateResult.matchedCount === 0) {
-      // This case handles if the user doesn't exist, though unlikely if authenticated.
-      // Or if there were no messages to delete, which is fine.
-    }
 
     // Step 2: Delete the event itself
     const deleteResult = await EventModel.deleteOne({
