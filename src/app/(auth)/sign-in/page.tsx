@@ -134,6 +134,25 @@ export default function SignInForm() {
             </Button>
           </form>
         </Form>
+        <div className="relative my-4">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-gray-600" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-gray-900 px-2 text-gray-400">
+              OR CONTINUE WITH
+            </span>
+          </div>
+        </div>
+
+        <Button
+          className="w-full cursor-pointer bg-white text-black hover:bg-gray-200 focus-visible:ring-offset-gray-900"
+          variant="outline"
+          onClick={() => signIn("google")}
+        >
+          {/* You can add a Google icon here */}
+          Sign in with Google
+        </Button>
         <div className="text-center text-gray-400">
           <p>
             Not a member yet?{" "}
