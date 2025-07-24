@@ -1,12 +1,9 @@
 import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import { kv } from "@vercel/kv"; // 1. Import the Vercel KV client
 
-// Initialize the Redis client from Vercel's environment variables
-const redis = Redis.fromEnv();
-
-// Create a new ratelimiter, that allows 5 requests per 10 seconds
+// 2. Create a new ratelimiter, that allows 5 requests per 10 seconds
 export const rateLimiter = new Ratelimit({
-  redis: redis,
+  redis: kv, // 3. Pass the 'kv' object directly here
   limiter: Ratelimit.slidingWindow(5, "10 s"),
   analytics: true,
   prefix: "mystery_messages_ratelimit",
