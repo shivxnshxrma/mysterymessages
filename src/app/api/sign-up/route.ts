@@ -2,9 +2,17 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import { rateLimiter } from "@/lib/rate-limiter";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   await dbConnect();
+  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+  const { success } = await rateLimiter.limit(ip);
+
+  if (!success) {
+    return new NextResponse("You are being rate limited.", { status: 429 });
+  }
 
   try {
     const { username, email, password } = await request.json();

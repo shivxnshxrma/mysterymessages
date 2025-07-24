@@ -1,8 +1,17 @@
 import dbConnect from "@/lib/dbConnect";
+import { rateLimiter } from "@/lib/rate-limiter";
 import UserModel from "@/model/User";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   await dbConnect();
+  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+  const { success } = await rateLimiter.limit(ip);
+
+  if (!success) {
+    return new NextResponse("You are being rate limited.", { status: 429 });
+  }
+
   try {
     const { username, code } = await request.json();
     const decodedusername = decodeURIComponent(username).toLowerCase();
