@@ -54,7 +54,7 @@ export default function SignInForm() {
       }
 
       if (result?.url) {
-        router.replace("/verify");
+        router.replace("/dashboard");
       }
     } catch (error) {
       console.error("Sign-in error:", error);
