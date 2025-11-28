@@ -8,10 +8,13 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   await dbConnect();
   const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
-  const { success } = await rateLimiter.limit(ip);
-
-  if (!success) {
-    return new NextResponse("You are being rate limited.", { status: 429 });
+  try {
+    const { success } = await rateLimiter.limit(ip);
+    if (!success) {
+      return new NextResponse("You are being rate limited.", { status: 429 });
+    }
+  } catch (error) {
+    console.error("Rate Limiter Error (Allowing traffic anyway):", error);
   }
 
   try {
